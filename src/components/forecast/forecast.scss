@@ -1,0 +1,86 @@
+@import '../../styles/colors';
+
+$radius: 10px;
+// use it if you decide to add the icons as a background
+//@for $i from 1 through 22 {
+//  .icon-#{$i} {
+//    background: url('../assets/icons/#{$i}.svg');
+//    width: 50px;
+//    height: 50px;
+//  }
+//}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.forecast {
+  display: grid;
+  margin: 0 50px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  @media (max-width: 1800px) and (min-width: 1024px) {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, auto);
+  }
+  @media (max-width: 1023px) and (min-width: 640px){
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+  }
+  @media (max-width: 639px){
+    margin: 0 20px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+  }
+  font-size: 17pt;
+
+  &__day {
+    background-color: $colorBundle__navigationBackground;
+    padding: 10px 15px 20px 15px;
+    min-width: 150px;
+    text-align: center;
+    border-radius: $radius;
+    @media (max-width: 639px){
+      min-width: 140px;
+    }
+  }
+
+  &__precipitation {
+    color: $colorBundle__lightText;
+
+    &-icon {
+      width: 80px;
+      margin-right: 10px;
+    }
+
+    &-percentage {
+
+    }
+
+  }
+
+  &__date {
+    background-color: $colorBundle__lightText;
+    color: $colorBundle__navigationBackground;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: $radius;
+  }
+
+  &__temperature {
+    color: $colorBundle__lightText;
+
+    &-min {
+      &:before {
+        content: '/';
+        margin: 10px;
+      }
+    }
+  }
+}

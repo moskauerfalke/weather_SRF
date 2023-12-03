@@ -5,6 +5,7 @@ import mockedForecast from './mocked_forecast.json';
 import Forecast from "./components/forecast/Forecast";
 import { WeatherData } from './interfaces/interfaces'
 import './styles/main.scss';
+import {Footer} from "./components/footer/Footer";
 
 const App = () => {
   const [forecast, setForecast] = useState<WeatherData | null>(null);
@@ -44,12 +45,14 @@ const App = () => {
 
 
   return (
-      <>
-       {isMockUsed && <div role="status">You see the mocked data!</div>}
-         <h1>The weather in {forecast.geolocation.default_name}</h1>
-       {forecast && <Forecast data={forecast} />}
-       <footer>This is a footer</footer>
-      </>
+      <div className="wrapper">
+       {isMockUsed && <div className="status" role="status">You see the mocked data!</div>}
+        <div className="main">
+          <h1>The weather in {forecast.geolocation.default_name}</h1>
+          {forecast && <Forecast data={forecast} />}
+        </div>
+       <Footer />
+      </div>
   );
 };
 
