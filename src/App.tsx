@@ -1,25 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getToken, getWeatherData } from './apiService';
+import { getToken, getWeatherData } from './services/apiService';
 import axios, { AxiosError } from 'axios';
 import mockedForecast from './mocked_forecast.json';
+import Forecast from "./components/forecast/Forecast";
+import { WeatherData } from './interfaces/interfaces'
 import './styles/main.scss';
-
-interface WeatherData {
-  days: {
-    symbol_code: number;
-    date_time: string;
-    max_color: {
-      temperature: number;
-    };
-    min_color: {
-      temperature: number;
-    };
-    PROBPCP_PERCENT: number;
-  }[];
-  geolocation: {
-    default_name: string
-  };
-}
 
 const App = () => {
   const [forecast, setForecast] = useState<WeatherData | null>(null);
@@ -54,35 +39,16 @@ const App = () => {
     fetchData();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (!forecast) return <div>No idea</div>;
+  if (loading) return <div role="alert" aria-busy="true">Loading weather data...</div>;
+  if (!forecast) return <div role="alert">Unable to load weather data. Pls check the console for more details.</div>;
 
 
   return (
       <>
-      {isMockUsed && <div>You see the mocked data!</div>}
-        <div>The weather in {forecast.geolocation.default_name}</div>
-      <div className="forecast">
-        {forecast.days.map((day, index) => {
-          const date = new Date(day.date_time);
-          console.log(day.date_time);
-          const dayFromDate = date.getDate().toString().padStart(2, '0');
-          const monthFromDate = (date.getMonth() + 1).toString().padStart(2, '0');
-          const dayOfWeek = date.toLocaleDateString('de-DE', { weekday: 'long' });
-
-          return (
-              <div className="forecast__day" key={index}>
-                <span>{dayOfWeek}, </span>
-                <span>{`${dayFromDate}.${monthFromDate}`}, </span>
-                {/* For better accessibility create a mapping and pass the value to the alt property */}
-                <img src={`/assets/icons/${day.symbol_code}.svg`} alt="Weather icon"/>
-                <span>{day.max_color.temperature}°C, </span>
-                <span>{day.min_color.temperature}°C, </span>
-                <span>{day.PROBPCP_PERCENT}%</span>
-              </div>
-          );
-        })}
-      </div>
+       {isMockUsed && <div role="status">You see the mocked data!</div>}
+         <h1>The weather in {forecast.geolocation.default_name}</h1>
+       {forecast && <Forecast data={forecast} />}
+       <footer>This is a footer</footer>
       </>
   );
 };
