@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { getToken, getWeatherData } from './apiService';
 import axios, { AxiosError } from 'axios';
 import mockedForecast from './mocked_forecast.json';
+import './styles/main.scss';
 
 interface WeatherData {
   days: {
+    symbol_code: number;
     date_time: string;
     max_color: {
       temperature: number;
@@ -60,17 +62,20 @@ const App = () => {
       <>
       {isMockUsed && <div>You see the mocked data!</div>}
         <div>The weather in {forecast.geolocation.default_name}</div>
-      <div>
+      <div className="forecast">
         {forecast.days.map((day, index) => {
           const date = new Date(day.date_time);
-          const dayFromDate = date.getUTCDate().toString().padStart(2, '0');
-          const monthFromDate = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+          console.log(day.date_time);
+          const dayFromDate = date.getDate().toString().padStart(2, '0');
+          const monthFromDate = (date.getMonth() + 1).toString().padStart(2, '0');
           const dayOfWeek = date.toLocaleDateString('de-DE', { weekday: 'long' });
 
           return (
-              <div key={index}>
+              <div className="forecast__day" key={index}>
                 <span>{dayOfWeek}, </span>
                 <span>{`${dayFromDate}.${monthFromDate}`}, </span>
+                {/* For better accessibility create a mapping and pass the value to the alt property */}
+                <img src={`/assets/icons/${day.symbol_code}.svg`} alt="Weather icon"/>
                 <span>{day.max_color.temperature}°C, </span>
                 <span>{day.min_color.temperature}°C, </span>
                 <span>{day.PROBPCP_PERCENT}%</span>
