@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 export const getToken = async () => {
+    console.log('process.env.REACT_APP_API_USERNAME ', process.env.REACT_APP_API_USERNAME);
     const response = await axios.post('https://api.srgssr.ch/oauth/v1/accesstoken?grant_type=client_credentials', {}, {
         auth: {
-            username: 'VjC5zOd4ZFGGoG7rPs3HLqMsepABlc9r',
-            password: 't1XMhQqVRIdj6v3R',
+            username: process.env.REACT_APP_API_USERNAME || '',
+            password: process.env.REACT_APP_API_PASSWORD || '',
         },
     });
     return response.data.access_token;
